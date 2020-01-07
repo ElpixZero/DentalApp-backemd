@@ -15,9 +15,14 @@ app.get('/test', (req, res) => {
 
 app.get('/patients', PatientCtrl.all);
 app.post('/patients', patientValidation.create, PatientCtrl.create);
+app.delete('/patients/:id', PatientCtrl.remove);
+app.patch('/patients/:id', patientValidation.create, PatientCtrl.update);
+app.get('/patients/:id', PatientCtrl.one);
 
 app.get('/appointments', AppointmentCtrl.all);
-app.post('/appointments', appointmentValidation.create, AppointmentCtrl.create);
+app.post('/appointments', appointmentValidation('create'), AppointmentCtrl.create);
+app.delete('/appointments/:id', AppointmentCtrl.remove);
+app.patch('/appointments/:id', appointmentValidation('update'), AppointmentCtrl.update);
 
 app.listen(6666, (err) => {
   if (err) {
