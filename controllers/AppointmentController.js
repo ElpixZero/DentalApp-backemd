@@ -2,7 +2,11 @@ const {Appointment, Patient} = require('../models');
 const { validationResult } = require('express-validator');
 const { delayedSMS } = require('../utils');
 const dayjs = require('dayjs');
+const ruLocale = require('dayjs/locale/ru');
 const dotenv = require('dotenv');
+const {groupBy, reduce} = require('lodash');
+
+const setActiveKey = require('../utils/setActiveKey');
 
 dotenv.config();
 
@@ -75,9 +79,23 @@ const all = (req, res) => {
         message: err
       })
     }
+    
+    const groupedData = groupBy(doc, 'date');
+    
+    const correctFormGroupedData = reduce(groupedData, function(result, value, key) {
+      result.push( result.length === 0 ? {
+        title: dayjs(key).locale(ruLocale).format('D MMMM'),
+        data: setActiveKey(value)
+      } : {
+        title: dayjs(key).locale(ruLocale).format('D MMMM'),
+        data: value
+      })
+      return result;
+    }, []);
+
     res.json({
       success: true,
-      data: doc
+      data: correctFormGroupedData
     });
   });
 }
@@ -118,6 +136,7 @@ const update = async (req, res) => {
   }
 
   const appointmentId = req.params.id;
+
   const data = {
     dentNumber: req.body.dentNumber,
     diagnosis: req.body.diagnosis,
