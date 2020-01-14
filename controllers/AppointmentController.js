@@ -166,11 +166,12 @@ const update = async (req, res) => {
     });
 }
 
+
 AppointmentController.prototype = {
   all,
   create,
   remove,
-  update
+  update,
 };
   
 module.exports = AppointmentController;

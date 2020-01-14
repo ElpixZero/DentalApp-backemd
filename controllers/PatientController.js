@@ -62,7 +62,7 @@ const one = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: {...patient._doc, appointments: patient.appointments}
+      data: {...patient._doc, appointments: patient.appointments}
     });
   } catch(e) {
     res.status(500).json({
