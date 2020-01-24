@@ -24,10 +24,14 @@ app.post('/appointments', appointmentValidation('create'), AppointmentCtrl.creat
 app.delete('/appointments/:id', AppointmentCtrl.remove);
 app.patch('/appointments/:id', appointmentValidation('update'), AppointmentCtrl.update);
 
-app.listen(6666, (err) => {
-  if (err) {
-    console.log('Port 6666 - is not available');
-  }
-
-  console.log('Server starts on 6666 port');
-})
+try {
+  app.listen(1111, (err) => {
+    if (err) {
+      console.log('Port 1111 - is not available');
+    }
+  
+    console.log('Server starts on 1111 port');
+  })
+} catch(e) {
+  console.log('server is out');
+}
