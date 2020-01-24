@@ -13,15 +13,15 @@ dotenv.config();
 function AppointmentController() {}
 
 const create = async (req, res) => {
-  const errors = validationResult(req);
-  let isExistPatient;
-  
+  const errors = validationResult(req);  
   if (!errors.isEmpty()) {
     return res.status(422).json({
       success: false,
       message: errors.array() 
     });
   }
+
+  let isExistPatient;
  
   const data = {
     patient: req.body.patient,
