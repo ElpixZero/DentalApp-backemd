@@ -1,8 +1,7 @@
 const {Appointment, Patient} = require('../models');
 const { validationResult } = require('express-validator');
-const { delayedSMS } = require('../utils');
+const { delayedSMS, getDateNames } = require('../utils');
 const dayjs = require('dayjs');
-const ruLocale = require('dayjs/locale/ru');
 const dotenv = require('dotenv');
 const {groupBy, reduce} = require('lodash');
 
@@ -72,7 +71,7 @@ const create = async (req, res) => {
 }
 
 const all = (req, res) => {
-  Appointment.find({}).populate('patient').exec( (err, doc) => {
+  Appointment.find({}).populate('patient').sort('date').exec( (err, doc) => {
     if(err) {
       return res.status(500).json({
         success: false,
@@ -84,10 +83,10 @@ const all = (req, res) => {
     
     const correctFormGroupedData = reduce(groupedData, function(result, value, key) {
       result.push( result.length === 0 ? {
-        title: dayjs(key).locale(ruLocale).format('D MMMM'),
+        title: getDateNames(key),
         data: setActiveKey(value)
       } : {
-        title: dayjs(key).locale(ruLocale).format('D MMMM'),
+        title: getDateNames(key),
         data: value
       })
       return result;

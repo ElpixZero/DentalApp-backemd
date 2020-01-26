@@ -25,12 +25,12 @@ app.delete('/appointments/:id', AppointmentCtrl.remove);
 app.patch('/appointments/:id', appointmentValidation('update'), AppointmentCtrl.update);
 
 try {
-  app.listen(1111, (err) => {
+  app.listen(process.env.PORT, (err) => {
     if (err) {
-      console.log('Port 1111 - is not available');
+      console.log(`Port ${process.env.PORT} - is not available`);
     }
   
-    console.log('Server starts on 1111 port');
+    console.log(`Server starts on ${process.env.PORT} port`);
   })
 } catch(e) {
   console.log('server is out');
