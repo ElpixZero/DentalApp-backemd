@@ -71,13 +71,15 @@ const create = async (req, res) => {
 }
 
 const all = (req, res) => {
-  Appointment.find({}).populate('patient').sort('date').exec( (err, doc) => {
+  const currendDate = dayjs(new Date()).format('YYYY-MM-DD');
+  Appointment.find({ date: { $gte: currendDate, $lte: '2050-10-26' } }).populate('patient').sort('date').exec( (err, doc) => {
     if(err) {
       return res.status(500).json({
         success: false,
         message: err
       })
     }
+    console.log(doc);
     
     const groupedData = groupBy(doc, 'date');
     
