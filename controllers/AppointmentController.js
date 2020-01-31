@@ -79,7 +79,6 @@ const all = (req, res) => {
         message: err
       })
     }
-    console.log(doc);
     
     const groupedData = groupBy(doc, 'date');
     
