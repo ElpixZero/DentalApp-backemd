@@ -72,7 +72,7 @@ const create = async (req, res) => {
 
 const all = (req, res) => {
   const currendDate = dayjs(new Date()).format('YYYY-MM-DD');
-  Appointment.find({ date: { $gte: currendDate, $lte: '2050-10-26' } }).populate('patient').sort('date').exec( (err, doc) => {
+  Appointment.find({ date: { $gte: currendDate } }).populate('patient').sort('date').exec( (err, doc) => {
     if(err) {
       return res.status(500).json({
         success: false,
