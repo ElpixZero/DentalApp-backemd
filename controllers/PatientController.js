@@ -52,8 +52,7 @@ const one = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const patient = await Patient.findById(id).populate('appointments').exec();
-
+    const patient = await Patient.findById(id).populate('appointments', null, null, {sort: '-date'}).exec();
     if (!patient) {
       return res.status(404).json({
         success: false,
