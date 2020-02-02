@@ -1,7 +1,8 @@
 const { validationResult } = require('express-validator');
 const { Patient } = require('../models');
- 
- function PatientController() {}
+const getCurrentDataForFilteringData = require('../utils/getCurrentDateForFIlteringData');
+
+function PatientController() {}
 
 const create = (req, res) => {
 const errors = validationResult(req);
@@ -49,10 +50,12 @@ const all = (req, res) => {
 }
 
 const one = async (req, res) => {
-  const id = req.params.id;
-
+  const {id} = req.params;
+  const {type} = req.query;
+console.log(type);
   try {
-    const patient = await Patient.findById(id).populate('appointments', null, null, {sort: '-date'}).exec();
+    const filterOfQuery = type === 'during' ? { $gte: getCurrentDataForFilteringData } : { $lte: getCurrentDataForFilteringData };
+    const patient = await Patient.findById(id).populate({path: 'appointments',  match: { date: filterOfQuery }, options:  {sort: '-date'} }).exec();
     if (!patient) {
       return res.status(404).json({
         success: false,

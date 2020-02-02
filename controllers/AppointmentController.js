@@ -2,6 +2,7 @@ const {Appointment, Patient} = require('../models');
 const { validationResult } = require('express-validator');
 const { delayedSMS, getDateNames } = require('../utils');
 const dayjs = require('dayjs');
+const getCurrentDataForFilteringData = require('../utils/getCurrentDateForFIlteringData');
 const dotenv = require('dotenv');
 const {groupBy, reduce} = require('lodash');
 
@@ -71,8 +72,7 @@ const create = async (req, res) => {
 }
 
 const all = (req, res) => {
-  const currendDate = dayjs(new Date()).format('YYYY-MM-DD');
-  Appointment.find({ date: { $gte: currendDate } }).populate('patient').sort('date').exec( (err, doc) => {
+  Appointment.find({ date: { $gte: getCurrentDataForFilteringData } }).populate('patient').sort('date').exec( (err, doc) => {
     if(err) {
       return res.status(500).json({
         success: false,
