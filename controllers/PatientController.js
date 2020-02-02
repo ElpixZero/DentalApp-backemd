@@ -52,7 +52,7 @@ const all = (req, res) => {
 const one = async (req, res) => {
   const {id} = req.params;
   const {type} = req.query;
-console.log(type);
+
   try {
     const filterOfQuery = type === 'during' ? { $gte: getCurrentDataForFilteringData } : { $lte: getCurrentDataForFilteringData };
     const patient = await Patient.findById(id).populate({path: 'appointments',  match: { date: filterOfQuery }, options:  {sort: '-date'} }).exec();
